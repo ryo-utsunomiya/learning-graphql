@@ -4,5 +4,10 @@
   "main": "index.js",
   "repository": "git@github.com:ryo-utsunomiya/learning-graphql.git",
   "author": "Ryo Utsunomiya <millionsnowliving@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.9",
+    "graphql": "^14.5.8",
+    "nodemon": "^1.19.4"
+  }
 }
