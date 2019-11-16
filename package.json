@@ -1,0 +1,8 @@
+{
+  "name": "learning-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ryo-utsunomiya/learning-graphql.git",
+  "author": "Ryo Utsunomiya <millionsnowliving@gmail.com>",
+  "license": "MIT"
+}
