@@ -9,5 +9,8 @@
     "apollo-server": "^2.9.9",
     "graphql": "^14.5.8",
     "nodemon": "^1.19.4"
+  },
+  "scripts": {
+    "start": "nodemon -e js,json,graphql"
   }
 }
