@@ -1,61 +1,21 @@
 const fs = require('fs');
-const { GraphQLScalarType } = require('graphql');
-const { ApolloServer } = require('apollo-server');
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
+const graphqlPlayground = require('graphql-playground-middleware-express').default;
+const resolvers = require('./resolvers');
 
 const typeDefs = fs.readFileSync('schema.graphql', { encoding: 'UTF-8' });
 
-let id = 0;
-const photos = [];
-const users = [];
-
-const resolvers = {
-  Query: {
-    totalPhotos: () => photos.length,
-    allPhotos: () => photos,
-  },
-  Mutation: {
-    postPhoto(parent, args) {
-      const { input } = args;
-      console.log(input);
-      const newPhoto = {
-        id: id++,
-        url: input.url,
-        name: input.name,
-        description: input.description,
-        category: input.photoCategory || 'PORTRAIT',
-        created: new Date(),
-      };
-      photos.push(newPhoto);
-      return newPhoto;
-    }
-  },
-  Photo: {
-    url: parent => `https://example.com/img/${parent.id}.jpg`,
-    postedBy: parent => users.find(u => u.githubLogin === parent.githubUser),
-    taggedUsers: parent => tags.filter(t => t.photoID === parent.id)
-      .map(t => t.userID)
-      .map(id => users.find(u => u.githubLogin === id))
-  },
-  User: {
-    postedPhotos: parent => photos.filter(p => p.githubUser === parent.githubLogin),
-    inPhotos: parent => tags.filter(t => t.userID === parent.id)
-      .map(t => t.photoID)
-      .map(id => photos.find(p => p.id === id)),
-  },
-  DateTime: new GraphQLScalarType({
-    name: 'DateTime',
-    description: 'A datetime value',
-    parseValue: value => new Date(value),
-    serialize: value => new Date(value).toISOString(),
-    parseLiteral: ast => ast.value,
-  }),
-};
-
+const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
+server.applyMiddleware({app});
 
-server
-  .listen()
-  .then(({url}) => console.log(`GraphQL Service running on ${url}`));
+app.get('/', (req, res) => res.end('Welcome to the PhotoShare API'));
+app.get('/playground', graphqlPlayground({ endpoint: server.graphqlPath }));
+
+app.listen({port:4000}, () => {
+  console.log(`GraphQL Server running at http://localhost:4000${server.graphqlPath}`);
+});
