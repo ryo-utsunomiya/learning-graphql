@@ -6,7 +6,7 @@
   "author": "Ryo Utsunomiya <millionsnowliving@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "apollo-server-express": "^2.9.9",
+    "apollo-server-express": "^2.14.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
